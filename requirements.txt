@@ -1,0 +1,18 @@
+--extra-index-url https://download.pytorch.org/whl/cu129
+
+torch==2.8.0+cu129
+torchvision==0.23.0+cu129
+torchaudio==2.8.0+cu129
+pytorch-lightning==1.9.0
+opencv-contrib-python
+einops
+kornia
+loguru
+yacs
+tqdm
+matplotlib
+h5py
+joblib
+timm
+tensorboard
+tensorboardX
