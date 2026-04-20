@@ -29,7 +29,7 @@ pip install -r requirements.txt
 Coming Soon!
 
 ### Pretrained Weights on E-Megadepth
-Pretrained MatchAnyEvents model weights can be downloaded here.
+Pretrained MatchAnyEvents model weights can be downloaded [here](https://livejohnshopkins-my.sharepoint.com/:u:/g/personal/rzhan158_jh_edu/IQDfqv8vdjGkRYBfKr9ShVzJAYs-hDzi-0y9lN7vI-9kmqw?e=szt9Od).
 
 Create a folder named `pretrained` and move the pretrained weights into this folder so that loading is supported directly in the demo and evaluation scripts.
 
