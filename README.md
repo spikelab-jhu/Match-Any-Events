@@ -47,12 +47,12 @@ https://github.com/user-attachments/assets/499cae1e-2d56-4894-91d4-0e6ed692b2d2
 
 * **System:** Ubuntu 22.04
 * **Cameras:** 2 x Prophesee Gen3 VGA (640x480)
-* **SDK:** Metavision SDK 4.6 [link](https://docs.prophesee.ai/stable/installation/index.html)
+* **SDK:** Metavision SDK 4.6 [https://docs.prophesee.ai/stable/installation/index.html](https://docs.prophesee.ai/stable/installation/index.html)
 
 Run the demo script using serial numbers of your cameras.
 
 ```bash
-python Event_matching_demo.py --s1 YOUR_SERIAL_NUMBER1 --s2 YOUR_SERIAL_NUMBER2
+python realtime_demo.py --s1 YOUR_SERIAL_NUMBER1 --s2 YOUR_SERIAL_NUMBER2
 ```
 
 ## Citation
