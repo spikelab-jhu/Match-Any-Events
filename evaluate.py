@@ -162,8 +162,6 @@ def symmetric_epipolar_distance(pts0, pts1, E, K0, K1):
     Ep0 = pts0 @ E.T  # [N, 3]
     p1Ep0 = torch.sum(pts1 * Ep0, -1)  # [N,]
     Etp1 = pts1 @ E  # [N, 3]
-    # import pdb
-    # pdb.set_trace()
 
     d = p1Ep0**2 * (1.0 / (Ep0[:, 0]**2 + Ep0[:, 1]**2) + 1.0 / (Etp1[:, 0]**2 + Etp1[:, 1]**2))  # N
     return d
@@ -368,7 +366,7 @@ def init_edm(device):
 
     config.MAE.TRAIN_DATA = 'image'
     profiler = build_profiler(None)
-    model = PL_MatchAnyEvents(config, pretrained_ckpt='./pretrained/pretrained_v1.pth', profiler=profiler).to(device=device) # event dino larger set
+    model = PL_MatchAnyEvents(config, pretrained_ckpt='./pretrained/event_matching_v1.pth', profiler=profiler).to(device=device) # event dino larger set
 
     return {'model':model}
     
@@ -498,8 +496,6 @@ def infer_vggt(pack, data, device):
     #     with torch.cuda.amp.autocast(dtype=dtype):
     #         # Predict attributes including cameras, depth maps, and point maps.
     #         predictions = model(input)
-    #         import pdb
-    #         pdb.set_trace()
     #         extrinsic, intrinsic = pose_encoding_to_extri_intri(predictions["pose_enc"], input.shape[-2:])
     #         predictions["extrinsic"] = extrinsic
     #         predictions["intrinsic"] = intrinsic
@@ -660,10 +656,6 @@ def main():
             elif args.model == 'vggt':
                 pts0, pts1 = infer_vggt(pack, data, device)
 
-
-
-            # import pdb
-            # pdb.set_trace()
 
             stop_time = time.perf_counter()
 

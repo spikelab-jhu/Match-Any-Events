@@ -12,7 +12,7 @@ from .tb_visualize_data import visualize_tb_lightning
 from utils.homographies import batch_h_augumentation
 from model import MatchAnyEvents
 from model.utils.supervision import compute_supervision_coarse, compute_supervision_fine
-from losses.loss import LoFTRLoss
+from losses.loss import Loss
 from .optimizer import build_optimizer, build_scheduler
 from utils.metrics import (
     compute_symmetrical_epipolar_errors,
@@ -52,7 +52,7 @@ class PL_MatchAnyEvents(pl.LightningModule):
         self.n_vals_plot = max(config.TRAINER.N_VAL_PAIRS_TO_PLOT // config.TRAINER.WORLD_SIZE, 1)
 
         self.matcher = MatchAnyEvents(config=_config['mae'], profiler=self.profiler)
-        self.loss = LoFTRLoss(_config)
+        self.loss = Loss(_config)
 
         # Pretrained weights
         if pretrained_ckpt:
