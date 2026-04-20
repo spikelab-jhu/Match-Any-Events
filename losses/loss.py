@@ -1,3 +1,5 @@
+# Matching loss function is modified from ELoFTR: https://github.com/zju3dv/EfficientLoFTR
+
 from loguru import logger
 
 import torch
@@ -8,7 +10,7 @@ from kornia.geometry.subpix import dsnt
 from kornia.utils.grid import create_meshgrid
 
 
-class LoFTRLoss(nn.Module):
+class Loss(nn.Module):
     def __init__(self, config):
         super().__init__()
         self.config = config  # config under the global namespace
@@ -29,7 +31,6 @@ class LoFTRLoss(nn.Module):
         self.local_regressw = self.config['mae']['fine_window_size']
         self.local_regress_temperature = self.config['mae']['match_fine']['local_regress_temperature']
         
-
     def compute_coarse_loss(self, conf, conf_gt, weight=None, overlap_weight=None):
         """ Point-wise CE / Focal Loss with 0 / 1 confidence as gt.
         Args:
@@ -184,8 +185,7 @@ class LoFTRLoss(nn.Module):
                 weight=c_weight)
         loss = loss_c * self.loss_config['coarse_weight']
         loss_scalars.update({"loss_c": loss_c.clone().detach().cpu()})
-        # import pdb
-        # pdb.set_trace()
+
         # 2. pixel-level loss (first-stage refinement)
         if self.overlap_weightf:
             loss_f = self.compute_fine_loss(data['conf_matrix_f'], data['conf_matrix_f_gt'], data['conf_matrix_f_error_gt'])
@@ -222,22 +222,19 @@ class LoFTRLoss(nn.Module):
             coords_normalized = dsnt.spatial_expectation2d(heatmap[None], True)[0]
             data.update({'expec_f': coords_normalized})
 
-        # loss_token = torch.tensor([0])
-        
-        # if 'prune' in data and data['prune'] is not None:
-
-            
-        #     # loss_token = torch.mean(data['prune'])
-        #     # if 'contrast_supv' in data:
-
-        #     #     loss_token = torch.mean(data['prune']*(1-self.loss_config['contrast_weight'] * data['contrast_supv']))
-        #     # else:
-        #     loss_token = torch.mean(data['prune'])
-        #     loss += loss_token * self.loss_config['token_weight']
-        #     loss_scalars.update({"loss_t": loss_token.clone().detach().cpu()})
         loss_l = self._compute_local_loss_l2(data['expec_f'], data['expec_f_gt'])
 
         loss += loss_l * self.loss_config['local_weight']
+
+
+        # Pounder loss for token pruning
+        if 'pounder_loss' in data:
+            loss_p = data['pounder_loss']
+            loss_p_c = data['certainty_loss']
+            loss += self.loss_config['pounder_weight'] * loss_p + self.loss_config['certainty_weight'] * loss_p_c
+            loss_scalars.update({"loss_p":  loss_p.clone().detach().cpu()})
+            loss_scalars.update({"loss_p_c":  loss_p_c.clone().detach().cpu()})
+
         loss_scalars.update({"loss_l":  loss_l.clone().detach().cpu()})
 
         loss_scalars.update({'loss': loss.clone().detach().cpu()})

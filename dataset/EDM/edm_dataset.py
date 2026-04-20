@@ -258,8 +258,6 @@ class EDMDataset(Dataset):
         data0_resized, K0_new = self.undistort_resize(data0, K0, D0)
         data1_resized, K1_new = self.undistort_resize(data1, K1, D1)
 
-        # import pdb
-        # pdb.set_trace()
 
         if vis0 is not None:
             vis0, _ = self.undistort_resize(vis0, K0, D0)
@@ -385,8 +383,7 @@ class M3EDDataset(Dataset):
                 converter = EventVis((3, self.src_res[0], self.src_res[1]))
                 vis = converter.convert(event_vis)
             if self.repre == 'reconstruction':
-                # import pdb
-                # pdb.set_trace()
+
                 event_data = self.read_im(opj(self.rec_dir,'%016d000.png' % ts))
             elif self.repre == 'event_frame':
                 converter = EventFrame((self.src_res[0],self.src_res[1]))
@@ -562,8 +559,7 @@ class EDSDataset(Dataset):
 
         events_t = h5py.File(opj(self.root_dir,'events.h5'), 'r')["t"][:]
         tss = self.get_all_ts()
-        # import pdb
-        # pdb.set_trace()
+
         if self.repre == 'event_stack':
             self.end_event_idx = np.searchsorted(events_t, np.array(tss) * 1e6 + 4*self.interval )
             self.current_event_idx = np.searchsorted(events_t, np.array(tss)* 1e6)
@@ -577,8 +573,7 @@ class EDSDataset(Dataset):
             self.end_event_idx = np.searchsorted(events_t, np.array(tss) * 1e6 + self.interval)
             self.current_event_idx = np.searchsorted(events_t, np.array(tss)* 1e6)
             self.repre_end_idx = np.searchsorted(events_t, np.array(tss)* 1e6 + self.interval)
-        # import pdb
-        # pdb.set_trace()
+
         # self.end_event_idx = np.searchsorted(events_t, np.array(tss) * 1e6 + self.interval )
 
     def parse_eds(self, json_file, seq_name):
@@ -866,16 +861,13 @@ class EMegaDataset(Dataset):
         return data_torch, K_new
     
     def load_h5(self, name):
-        # import pdb
-        # pdb.set_trace()
+
         with h5py.File(opj(self.root_dir, self.scene_id, 'images',  name+'.h5'), 'r') as f:
             event_batch = {'x':torch.from_numpy(f['event/x'][:].copy().astype(float)).to(torch.float32),
                 'y': torch.from_numpy(f['event/y'][:].copy().astype(float)).to(torch.float32),
                 't': torch.from_numpy(f['event/t'][:].copy().astype(float)).to(torch.float32),
                 'p': torch.from_numpy(f['event/p'][:].copy().astype(float)).to(torch.float32) # Polarity already in -1,1
                 }
-            # import pdb
-            # pdb.set_trace()
             
             vis_index = torch.searchsorted(event_batch['t'], event_batch['t'][0]+30*1e6) # TODO: Verify
             event_vis = {
@@ -934,9 +926,6 @@ class EMegaDataset(Dataset):
 
         data0_resized, K0_new = self.undistort_resize(data0, K0, np.zeros(5))
         data1_resized, K1_new = self.undistort_resize(data1, K1, np.zeros(5))
-
-        # import pdb
-        # pdb.set_trace()
 
         if vis0 is not None:
             vis0, _ = self.undistort_resize(vis0, K0, np.zeros(5))
@@ -1080,8 +1069,6 @@ class CustomDataset(Dataset):
         # undistorted = undistorted[:,:h_new-1,:w_new-1]
 
         data_torch = torch.from_numpy(undistorted)
-        # import pdb
-        # pdb.set_trace()
         if roi is not None:
             data_torch = data_torch[:,roi[-1]:roi[-1]+self.dst_res[0], roi[0]:roi[0]+self.dst_res[-1]]
 
@@ -1095,8 +1082,6 @@ class CustomDataset(Dataset):
     
     def load_h5(self, dir, index):
         with h5py.File(dir, 'r') as f:
-            # import pdb
-            # pdb.set_trace()
 
             idx_start, idx_stop, idx_stop_vis = self.idx_start[index], self.idx_stop[index], self.idx_stop_vis[index]
 
@@ -1161,9 +1146,6 @@ class CustomDataset(Dataset):
         D1 = self.calibration['event']['D']
         data0_resized, K0_new = self.undistort_resize(data0, K0, np.zeros(5))
         data1_resized, K1_new = self.undistort_resize(data1, K1, D1, roi = self.roi)
-
-        # import pdb
-        # pdb.set_trace()
 
         if vis0 is not None:
             vis0, _ = self.undistort_resize(vis0, K0, D0)

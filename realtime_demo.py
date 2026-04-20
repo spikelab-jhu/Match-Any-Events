@@ -132,7 +132,7 @@ def to_tensor(e, num_bin=8, src_res = (480,640), device='cuda'):
 def init_edm(device):
     config = get_cfg_defaults()
     profiler = build_profiler(None)
-    model = PL_MatchAnyEvents(config, pretrained_ckpt='./pretrained/pretrained_v1.pth', profiler=profiler).to(device=device) 
+    model = PL_MatchAnyEvents(config, pretrained_ckpt='./pretrained/event_matching_v1.pth', profiler=profiler).to(device=device) 
 
     return model
 

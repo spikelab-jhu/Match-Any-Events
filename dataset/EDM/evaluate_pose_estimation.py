@@ -175,8 +175,6 @@ def predict_keypoints(args, config, ts_shape, model, events, poses, start_time, 
             # Save keypoints and descriptors in list
             pred_list.append({"t": pose[0], "index":i,# "kpts": kpts, "desc": desc, 
                               "gt_t": pose[1:4], "gt_rot": pose[4:8]})
-            # import pdb
-            # pdb.set_trace()
             # if args.visualize:
             #     # Save for visualization
             #     ts_vis_list.append(cv2.cvtColor(visualization.ts2image(ts[0].detach().cpu().numpy().transpose(1,2,0)), cv2.COLOR_BGR2GRAY))
@@ -301,8 +299,6 @@ def calculate_pose_estimation_error(pred_list, deg_intervals, max_delta_t, ransa
                 # Estimate pose
                 # matched_kpts = np.roll(matched_kpts, 1, axis=-1)  # Prediction is (row, column) instead of (x, y)
 
-                # import pdb
-                # pdb.set_trace()
                 try:
                     num_inliers, E, est_R, est_t, ransac_mask = cv2.recoverPose(points1=pts0.astype(np.float64), points2=pts1.astype(np.float64), 
                                                                                 cameraMatrix1=camera_matrix, cameraMatrix2=camera_matrix,

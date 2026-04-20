@@ -22,7 +22,7 @@ class MatchAnyEvents(nn.Module):
         self.profiler = profiler
       
         self.event_backbone = DinoDPT(amp=False, init_weight=False, config=config['dino'])
-        self.loftr_coarse = LocalFeatureTransformer(config)
+        self.coarse_transformer = LocalFeatureTransformer(config)
         self.coarse_matching = CoarseMatching(config['match_coarse'])
         self.linear = nn.Sequential(
             nn.Linear(config['dino']['dim'], config['coarse']['d_model'], bias=False),
@@ -140,7 +140,7 @@ class MatchAnyEvents(nn.Module):
         })
 
 
-        feat_c0, feat_c1 = self.loftr_coarse(feat_c0, feat_c1)
+        feat_c0, feat_c1 = self.coarse_transformer(feat_c0, feat_c1)
         
         # detect NaN during mixed precision training
         if self.config['replace_nan'] and (torch.any(torch.isnan(feat_c0)) or torch.any(torch.isnan(feat_c1))):
