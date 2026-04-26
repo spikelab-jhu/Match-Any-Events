@@ -58,6 +58,14 @@ python realtime_demo.py --s1 YOUR_SERIAL_NUMBER1 --s2 YOUR_SERIAL_NUMBER2
 Coming Soon!
 
 ## Citation
+```bibtex
+@article{zhang2026match,
+  title={Match-Any-Events: Zero-Shot Motion-Robust Feature Matching Across Wide Baselines for Event Cameras},
+  author={Zhang, Ruijun and Su, Hang and Daniilidis, Kostas and Wang, Ziyun},
+  journal={arXiv preprint arXiv:2604.18744},
+  year={2026}
+}
+```
 
 ## Acknowledgements
 
