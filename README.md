@@ -49,7 +49,7 @@ https://github.com/user-attachments/assets/499cae1e-2d56-4894-91d4-0e6ed692b2d2
 * **Cameras:** 2 x Prophesee Gen3 VGA (640x480)
 * **SDK:** Metavision SDK 4.6 [https://docs.prophesee.ai/stable/installation/index.html](https://docs.prophesee.ai/stable/installation/index.html)
 
-Run the demo script using serial numbers of your cameras.
+Run the demo script using the serial numbers of your cameras. If you are using Prophesee cameras, they are 8 digit numbers that can be found in Metavision Studio.
 
 ```bash
 python realtime_demo.py --s1 YOUR_SERIAL_NUMBER1 --s2 YOUR_SERIAL_NUMBER2
